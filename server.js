@@ -34,6 +34,7 @@ var allowCrossDomain = function(req, res, next) {
 
 var server = express();
 server.use(express.bodyParser());
+server.use(express.allowCrossDomain);
 
 server.options("*", function(req,res,next){res.send({});});
 
