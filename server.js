@@ -1,3 +1,9 @@
+/*
+Rushed ugly code by <thomasalwyndavis@gmail.com>
+
+Will clean up and make available
+
+*/
 var MailChimpAPI = require('mailchimp').MailChimpAPI;
 //
 var apiKey = process.env.MAILCHIMP_API_KEY;
@@ -8,12 +14,8 @@ try {
     console.log(error.message);
 }
 
-
-
 var express = require('express');
-
 var port = process.env.PORT || 8080;
-
 var allowCrossDomain = function(req, res, next) {
   var allowedHost = [
     'http://2.stopwatching.us',
@@ -35,8 +37,27 @@ server.use(express.bodyParser());
 
 server.options("*", function(req,res,next){res.send({});});
 
-server.get('/', function(req,res,next){
-    api.call('lists', 'subscribe', { id: 'c05d6bd75f', email: {email:'thomasalwyndavis+wwwwwaa@gmail.com'}, double_optin: false }, function (error, data) {
+server.post('/subscribe', function(req,res,next){
+    
+    var email = req.body.email;
+    var name = req.body.name || '';
+    var phone = req.body.phone || '';
+    var zipcode = req.body.zipcode || '';
+
+
+    api.call('lists', 'subscribe', { 
+        id: 'c05d6bd75f', 
+        email: {email: email},
+        merge_vars: {
+          EMAIL: email,
+          PHONE: phone,
+          ZIPCODE: zipcode,
+          NAME: name
+        },
+
+        double_optin: false 
+
+    }, function (error, data) {
     if (error)
         console.log(error.message);
     else
