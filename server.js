@@ -60,7 +60,7 @@ server.post('/subscribe', function(req,res,next){
 
     }, function (error, data) {
     if (error)
-        console.log(error.message);
+        res.send({error: error.message});
     else
         res.send(JSON.stringify(data)); // Do something with your data!
 });
