@@ -55,7 +55,7 @@ server.post('/subscribe', function(req,res,next){
           ZIPCODE: zipcode,
           NAME: name
         },
-
+        send_welcome: true,
         double_optin: false 
 
     }, function (error, data) {
