@@ -22,7 +22,11 @@ var allowCrossDomain = function(req, res, next) {
     'http://dev.stopwatching.us',
     'http://rally.stopwatching.us',
     'http://2.stopwatching.us',
-    'http://localhost:4000'
+    'http://localhost:4000',
+    'https://dev.stopwatching.us',
+    'https://rally.stopwatching.us',
+    'https://2.stopwatching.us',
+    'https://localhost:4000'
   ];
   if(allowedHost.indexOf(req.headers.origin) !== -1 ) {
     res.header('Access-Control-Allow-Credentials', true);
@@ -68,7 +72,7 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
       }, function (error, data) {
       });
       res.send(JSON.stringify(merge_vars)); // Do something with your data!
-      
+
   });
 
 
