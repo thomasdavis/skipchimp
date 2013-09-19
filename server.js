@@ -5,7 +5,8 @@ Will clean up and make available
 
 */
 var MailChimpAPI = require('mailchimp').MailChimpAPI;
-//
+var MongoClient = require('mongodb').MongoClient
+  , format = require('util').format;    
 var apiKey = process.env.MAILCHIMP_API_KEY;
 
 try { 
@@ -33,40 +34,45 @@ var allowCrossDomain = function(req, res, next) {
     res.send({auth: false});
   }
 }
+MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
+  if(err) throw err;
 
-var server = express();
-server.use(express.bodyParser());
-server.use(allowCrossDomain);
+  var collection = db.collection('emails');
+  var server = express();
+  server.use(express.bodyParser());
+  server.use(allowCrossDomain);
 
-server.options("*", function(req,res,next){res.send({});});
+  server.options("*", function(req,res,next){res.send({});});
 
-server.post('/subscribe', function(req,res,next){
-    
-    var email = req.body.email;
-    var name = req.body.name || '';
-    var phone = req.body.phone || '';
-    var zipcode = req.body.zipcode || '';
+  server.post('/subscribe', function(req,res,next){
+      
+      var email = req.body.email;
+      var name = req.body.name || '';
+      var phone = req.body.phone || '';
+      var zipcode = req.body.zipcode || '';
+      var merge_vars = {
+        EMAIL: email,
+        PHONE: phone,
+        ZIPCODE: zipcode,
+        NAME: name
+      };
 
+      collection.insert(merge_vars, function(err, docs) {console.log('Saved Email')});
+      api.call('lists', 'subscribe', { 
+          id: 'c05d6bd75f', 
+          email: {email: email},
+          merge_vars: merge_vars,
+          send_welcome: true,
+          double_optin: false 
 
-    api.call('lists', 'subscribe', { 
-        id: 'c05d6bd75f', 
-        email: {email: email},
-        merge_vars: {
-          EMAIL: email,
-          PHONE: phone,
-          ZIPCODE: zipcode,
-          NAME: name
-        },
-        send_welcome: true,
-        double_optin: false 
+      }, function (error, data) {
+      if (error)
+          res.send({error: error.message});
+      else
+          res.send(JSON.stringify(data)); // Do something with your data!
+  });
+  });
 
-    }, function (error, data) {
-    if (error)
-        res.send({error: error.message});
-    else
-        res.send(JSON.stringify(data)); // Do something with your data!
-});
-});
 
 
 
@@ -74,3 +80,4 @@ server.post('/subscribe', function(req,res,next){
     console.log('%s listening at %s', server.name, server.url);
   });
 
+})
