@@ -18,6 +18,8 @@ var express = require('express');
 var port = process.env.PORT || 8080;
 var allowCrossDomain = function(req, res, next) {
   var allowedHost = [
+    'http://dev.stopwatching.us',
+    'http://rally.stopwatching.us',
     'http://2.stopwatching.us',
     'http://localhost:4000'
   ];
