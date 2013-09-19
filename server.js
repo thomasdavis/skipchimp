@@ -66,11 +66,9 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
           double_optin: false 
 
       }, function (error, data) {
-      if (error)
-          res.send({error: error.message});
-      else
-          res.send(JSON.stringify(data)); // Do something with your data!
-  });
+      });
+      res.send(JSON.stringify(merge_vars)); // Do something with your data!
+      
   });
 
 
