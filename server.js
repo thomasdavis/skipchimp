@@ -77,7 +77,8 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
           email: {email: email},
           merge_vars: merge_vars,
           send_welcome: true,
-          double_optin: false 
+          double_optin: false,
+          update_existing: true
 
       }, function (error, data) {
       });
