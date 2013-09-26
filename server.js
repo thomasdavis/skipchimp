@@ -54,11 +54,21 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
       var name = req.body.name || '';
       var phone = req.body.phone || '';
       var zipcode = req.body.zipcode || '';
+
+      var about = req.body.about || '';
+      var viewing_party = req.body.viewing_party || '';
+      var transportation = req.body.transportation || '';
+      var call_banking = req.body.call_banking || '';
+
       var merge_vars = {
         EMAIL: email,
         PHONE: phone,
+        NAME: name,
         ZIPCODE: zipcode,
-        NAME: name
+        ABOUT: about,
+        VP: viewing_party,
+        VT: transportation,
+        CB: call_banking
       };
 
       collection.insert(merge_vars, function(err, docs) {console.log('Saved Email')});
