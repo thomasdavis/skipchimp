@@ -60,6 +60,7 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
       var transportation = req.body.transportation || '';
       var call_banking = req.body.call_banking || '';
       var address = req.body.address || '';
+      var notindc = req.body.notindc || '';
 
       var merge_vars = {
         EMAIL: email,
@@ -70,6 +71,7 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
         VP: viewing_party,
         VT: transportation,
         ADDRESS: address,
+        NOTINDC: notindc,
         CB: call_banking
       };
 
