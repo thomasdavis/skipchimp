@@ -52,28 +52,11 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
   server.post('/subscribe', function(req,res,next){
       
       var email = req.body.email;
-      var name = req.body.name || '';
-      var phone = req.body.phone || '';
-      var zipcode = req.body.zipcode || '';
-
-      var about = req.body.about || '';
-      var viewing_party = req.body.viewing_party || '';
-      var transportation = req.body.transportation || '';
-      var call_banking = req.body.call_banking || '';
-      var address = req.body.address || '';
-      var notindc = req.body.notindc || '';
+      var domain  = req.body.domain || 'thedaywefightback.org';
 
       var merge_vars = {
         EMAIL: email,
-        PHONE: phone,
-        NAME: name,
-        ZIPCODE: zipcode,
-        ABOUT: about,
-        VP: viewing_party,
-        VT: transportation,
-        ADDRESS: address,
-        NOTINDC: notindc,
-        CB: call_banking
+        DOMAIN: domain
       };
 
       collection.insert(merge_vars, function(err, docs) {console.log('Saved Email')});
